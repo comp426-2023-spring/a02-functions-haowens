@@ -9,16 +9,7 @@ import fetch from "node-fetch";
 
 const args = minimist(process.argv.slice()); 
 
-let latitude;
-let longitude;
-let timezone;
-
-
-if (args.n) {
-    latitude = args.n;
-} else if (args.s) {
-    latitude = args.s * -1;
-} else {
+if ("h" in args) {
     console.log("Usage: galosh.js [options] -[n|s] LATITUDE -[e|w] LONGITUDE -z TIME_ZONE");
     console.log("   -h            Show this help message and exit.");
     console.log("   -n, -s        Latitude: N positive; S negative.");
@@ -29,19 +20,25 @@ if (args.n) {
     process.exit(0);
 }
 
+let latitude;
+let longitude;
+let timezone;
+
+if (args.n) {
+    latitude = args.n;
+} else if (args.s) {
+    latitude = args.s * -1;
+} else {
+    console.log("Latitude must be in range");
+    process.exit(0);
+}
+
 if ("e" in args) {
     longitude = args["e"];
 } else if ("w" in args) {
     longitude = args["w"] * -1;
 } else {
-    console.log("Usage: galosh.js [options] -[n|s] LATITUDE -[e|w] LONGITUDE -z TIME_ZONE");
-    console.log("   -h            Show this help message and exit.");
-    console.log("   -n, -s        Latitude: N positive; S negative.");
-    console.log("   -e, -w        Longitude: E positive; W negative.");
-    console.log("   -z            Time zone: uses tz.guess() from moment-timezone by default.");
-    console.log("   -d 0-6        Day to retrieve weather: 0 is today; defaults to 1.");
-    console.log("   -j            Echo pretty JSON from open-meteo API and exit.");
-   
+    console.log("Longitude must be in range");
     process.exit(0);
 }
 
@@ -61,17 +58,6 @@ if ("t" in args) {
     timezone = moment.tz.guess();
 }
 
-
-if ("h" in args) {
-    console.log("Usage: galosh.js [options] -[n|s] LATITUDE -[e|w] LONGITUDE -z TIME_ZONE");
-    console.log("   -h            Show this help message and exit.");
-    console.log("   -n, -s        Latitude: N positive; S negative.");
-    console.log("   -e, -w        Longitude: E positive; W negative.");
-    console.log("   -z            Time zone: uses tz.guess() from moment-timezone by default.");
-    console.log("   -d 0-6        Day to retrieve weather: 0 is today; defaults to 1.");
-    console.log("   -j            Echo pretty JSON from open-meteo API and exit.");
-    process.exit(0);
-}
 
 
 const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&timezone=" + timezone + "&current_weather=true&daily=precipitation_hours";
