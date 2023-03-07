@@ -31,6 +31,11 @@ if (ns == "-h") {
     ;
 }
 
+if("j" in args) {
+    console.log(data);
+    process.exit(0);
+}
+
 //extract system timezone
 const timezone = moment.tz.guess();
 
