@@ -47,6 +47,9 @@ console.log(data);
 const days = args.d 
 
 if (days == 0) {
+    if (data.daily.precipitation_hours[0] > 0) {
+        console.log();
+    }
   console.log("today.")
 } else if (days > 1) {
   console.log("in " + days + " days.")
