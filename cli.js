@@ -26,11 +26,11 @@ if ("e" in args) {
     longitude = args["w"] * -1;
 }
 
-if ((latitude == undefined) || (-90 > latitude || 90 < latitude)) {
+if ((latitude === undefined) || (-90 > latitude || 90 < latitude)) {
     console.log("out of range");
     process.exit(0);
 }
-if ((longitude == undefined) || (-180 > longitude || 180 < longitude)) {
+if ((longitude === undefined) || (-180 > longitude || 180 < longitude)) {
     console.log("out of range");
     process.exit(0);
 }
