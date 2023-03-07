@@ -9,34 +9,44 @@ import fetch from "node-fetch";
 
 const args = minimist(process.argv.slice()); 
 
-let latitude = undefined;
-let longitude = undefined;
+let latitude;
+let longitude;
+let timezone;
 
 
-
-if ("n" in args) {
-    latitude = args["n"];
-} else if ("s" in args) {
-    latitude = args["s"] * -1;
+if (args.n) {
+    latitude = args.n;
+} else if (args.s) {
+    latitude = args.s * -1;
+} else {
+    console.log("invalid latitude");
+    process.exit(0);
 }
 
 if ("e" in args) {
     longitude = args["e"];
 } else if ("w" in args) {
     longitude = args["w"] * -1;
-}
-
-if ((latitude === undefined) || (-90 > latitude || 90 < latitude)) {
-    console.log("out of range");
-    process.exit(0);
-}
-if ((longitude === undefined) || (-180 > longitude || 180 < longitude)) {
-    console.log("out of range");
+} else {
+    console.log("invalid longitude");
     process.exit(0);
 }
 
+// if ((latitude === undefined) || (-90 > latitude || 90 < latitude)) {
+//     console.log("out of range");
+//     process.exit(0);
+// }
+// if ((longitude === undefined) || (-180 > longitude || 180 < longitude)) {
+//     console.log("out of range");
+//     process.exit(0);
+// }
 
-let timezone = moment.tz.guess();
+
+if ("t" in args) {
+    timezone = args.t;
+} else {
+    timezone = moment.tz.guess();
+}
 
 
 if ("h" in args) {
