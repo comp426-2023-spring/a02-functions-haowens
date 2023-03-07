@@ -2,6 +2,7 @@
 
 import moment from "moment-timezone";
 import minimist from "minimist";
+import fetch from "node-fetch";
 
 
 //node cli.js -n 35.92 -w 79.05 -z America/New_York
