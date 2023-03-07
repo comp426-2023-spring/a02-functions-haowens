@@ -58,7 +58,6 @@ const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&lo
 // Make a request
 const response = await fetch(url);
 const data = await response.json();
-console.log(data);
 
 
 //data.daily.precipitation_hours[0] would refer to TODAY. data.daily.precipitation_hours[1] would refer to TOMORROW, and so on.
