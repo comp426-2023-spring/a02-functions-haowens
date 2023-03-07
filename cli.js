@@ -77,22 +77,24 @@ if (days == 0) {
     } else {
         console.log("you don't have to wear galoshes today.");
    }
-   process.exit(0);
+
 } else if (days > 1) {
    if (data.daily.precipitation_hours[days] > 0) {
         console.log("you should probably wear galoshes in" + days + "days.");
     } else {
        console.log("you don't have to wear galoshes in" + days + "days.");
    }
-    process.exit(0);
+
 } else {
    if (data.daily.precipitation_hours[1] > 0) {
         console.log("you should probably wear galoshes tomorrow.");
    } else {
        console.log("you don't have to wear galoshes tomorrow.");
         }
-    process.exit(0);
+
 }
+
+
 
 
 
