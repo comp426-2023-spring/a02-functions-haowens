@@ -32,7 +32,9 @@ if (ns == "-h") {
 //extract system timezone
 const timezone = moment.tz.guess();
 
-fetch("http://example.com/movies.json")
+const url = "https://api.open-meteo.com/v1/forecast?latitude=" + lattitude + "&longitude=" + longitude + "&timezone=" + where + "&current_weather=true&daily=precipitation_hours";
+
+fetch(url)
   .then((response) => response.json())
   .then((data) => console.log(data));
 }
