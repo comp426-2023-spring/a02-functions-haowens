@@ -9,17 +9,35 @@ import fetch from "node-fetch";
 
 const args = minimist(process.argv.slice()); 
 
-var ns = process.argv[2];
-var lattitude = process.argv[3];
-var ew = process.argv[4];
-var longitude = process.argv[5];
-var z = process.argv[6];
-var where = process.argv[7];
-var d = process.argv[8];
-var day = process.argv[9];
+let latitude;
+let longitude;
 
 
-if (ns == "-h") {
+
+if ("n" in args) {
+    latitude = args["n"];
+} else if ("s" in args) {
+    latitude = args["s"] * -1;
+}
+
+if ("e" in args) {
+    longitude = args["e"];
+} else if ("w" in args) {
+    longitude = args["w"] * -1;
+}
+
+if (-90 > latitude || 90 < latitude) {
+    process.exit(1);
+}
+if (-90 > longitude || 90 < longitude) {
+    process.exit(1);
+}
+
+
+let timezone = moment.tz.guess();
+
+
+if ("h" in args) {
     console.log("Usage: galosh.js [options] -[n|s] LATITUDE -[e|w] LONGITUDE -z TIME_ZONE");
     console.log("   -h            Show this help message and exit.");
     console.log("   -n, -s        Latitude: N positive; S negative.");
@@ -28,7 +46,6 @@ if (ns == "-h") {
     console.log("   -d 0-6        Day to retrieve weather: 0 is today; defaults to 1.");
     console.log("   -j            Echo pretty JSON from open-meteo API and exit.");
     process.exit(0);
-    ;
 }
 
 if("j" in args) {
@@ -36,11 +53,7 @@ if("j" in args) {
     process.exit(0);
 }
 
-//extract system timezone
-const timezone = moment.tz.guess();
-
-const url = "https://api.open-meteo.com/v1/forecast?latitude=" + lattitude + "&longitude=" + longitude + "&timezone=" + where + "&current_weather=true&daily=precipitation_hours";
-
+const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&timezone=" + timezone + "&current_weather=true&daily=precipitation_hours";
 
 // Make a request
 const response = await fetch(url);
@@ -50,18 +63,36 @@ console.log(data);
 
 //data.daily.precipitation_hours[0] would refer to TODAY. data.daily.precipitation_hours[1] would refer to TOMORROW, and so on.
 
-const days = args.d 
+let days;
+if ("d" in args) {
+    days = args.d 
+} else {
+    days = 1;
+}
 
 if (days == 0) {
-    if (data.daily.precipitation_hours[0] > 0) {
-        console.log();
-    }
-  console.log("today.")
+    if (data.daily.precipitation_hours[days] > 0) {
+        console.log("you should probably wear galoshes today.");
+    } else {
+        console.log("you don't have to wear galoshes today.");
+   }
+   process.exit(0);
 } else if (days > 1) {
-  console.log("in " + days + " days.")
+   if (data.daily.precipitation_hours[days] > 0) {
+        console.log("you should probably wear galoshes in" + days + "days.");
+    } else {
+       console.log("you don't have to wear galoshes in" + days + "days.");
+   }
+    process.exit(0);
 } else {
-  console.log("tomorrow.")
+   if (data.daily.precipitation_hours[1] > 0) {
+        console.log("you should probably wear galoshes tomorrow.");
+   } else {
+       console.log("you don't have to wear galoshes tomorrow.");
+        }
+    process.exit(0);
 }
+
 
 
 
