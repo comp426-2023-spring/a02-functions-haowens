@@ -27,10 +27,12 @@ if ("e" in args) {
 }
 
 if (-90 > latitude || 90 < latitude) {
-    process.exit(1);
+    console.log("out of range");
+    process.exit(0);
 }
-if (-90 > longitude || 90 < longitude) {
-    process.exit(1);
+if (-180 > longitude || 180 < longitude) {
+    console.log("out of range");
+    process.exit(0);
 }
 
 
