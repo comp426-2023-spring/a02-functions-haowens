@@ -48,10 +48,6 @@ if ("h" in args) {
     process.exit(0);
 }
 
-if("j" in args) {
-    console.log(data);
-    process.exit(0);
-}
 
 const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&timezone=" + timezone + "&current_weather=true&daily=precipitation_hours";
 
@@ -59,6 +55,10 @@ const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&lo
 const response = await fetch(url);
 const data = await response.json();
 
+if("j" in args) {
+    console.log(data);
+    process.exit(0);
+}
 
 //data.daily.precipitation_hours[0] would refer to TODAY. data.daily.precipitation_hours[1] would refer to TOMORROW, and so on.
 
